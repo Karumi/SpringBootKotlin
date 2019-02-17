@@ -1,0 +1,24 @@
+POST http://localhost:8080/developer
+Content-Type: application/json
+
+{
+  "email": "toni@karumi.com",
+  "username": "tonilopezmr"
+}
+
+> {%
+ client.global.set("devId", response.body.id)
+ %}
+
+###
+
+GET http://localhost:8080/developer/{{devId}}
+Accept: application/json
+
+###
+
+
+GET http://localhost:8080/developer/ba166a3c-f9ce-414c-baad-1737038d49b2
+Accept: application/json
+
+###
