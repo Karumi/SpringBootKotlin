@@ -6,27 +6,27 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-GET http://localhost:5000/actuator
+GET http://{{host}}:{{port}}/actuator
 Accept: application/json
 
 ###
 
-GET http://localhost:5000/actuator/info
+GET http://{{host}}:{{port}}/actuator/info
 Accept: application/json
 
 ###
 
-GET http://localhost:5000/actuator/health
+GET http://{{host}}:{{port}}/actuator/health
 Accept: application/json
 
 ###
 
-GET http://localhost:5000/actuator/metrics
+GET http://{{host}}:{{port}}/actuator/metrics
 Accept: application/json
 
 ###
 
-GET http://localhost:5000/actuator/metrics/jvm.memory.used
+GET http://{{host}}:{{port}}/actuator/metrics/jvm.memory.used
 Accept: application/json
 
 ###
