@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class CreateKarumiDeveloper(
-    private val developerDao: DeveloperDao
+  private val developerDao: DeveloperDao
 ) {
 
   operator fun invoke(developer: Developer): Try<Developer> =

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 @Component
-interface DeveloperRepository: PagingAndSortingRepository<Developer, UUID>
+interface DeveloperRepository : PagingAndSortingRepository<Developer, UUID>
 
 @Component
 class DeveloperDao(private val developerRepository: DeveloperRepository) {
@@ -28,5 +28,4 @@ class DeveloperDao(private val developerRepository: DeveloperRepository) {
         .orElse(null)
         .toOption()
   }
-
 }

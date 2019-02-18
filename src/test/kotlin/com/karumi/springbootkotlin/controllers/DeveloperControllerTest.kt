@@ -5,7 +5,6 @@ import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import com.karumi.springbootkotlin.given.GivenDeveloper
 import com.karumi.springbootkotlin.given.givenDeveloper
-import io.kotlintest.Spec
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener
@@ -14,15 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
-import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.ResponseEntity
-import org.springframework.test.context.TestContextManager
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.UUID
-
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -89,18 +86,19 @@ class DeveloperControllerTest : StringSpec(), GivenDeveloper by givenDeveloper {
   }
 
   private fun postDeveloper(developer: Developer): ResponseEntity<Developer> =
-      restTemplate.postForEntity("$URL/developer", developer, Developer::class.java)
+    restTemplate.postForEntity("$URL/developer", developer, Developer::class.java)
 
   private inline fun <reified A> post(value: A): ResponseEntity<*> =
-      restTemplate.postForEntity("$URL/developer", value, Any::class.java)
+    restTemplate.postForEntity("$URL/developer", value, Any::class.java)
 
   private fun getDeveloper(developer: Developer): ResponseEntity<Developer> =
-      restTemplate.getForEntity("$URL/developer/${developer.id}", Developer::class.java)
+    restTemplate.getForEntity("$URL/developer/${developer.id}", Developer::class.java)
 
   private fun get(developer: Developer): ResponseEntity<*> =
-      restTemplate.getForEntity("$URL/developer/${developer.id}", Any::class.java)
+    restTemplate.getForEntity("$URL/developer/${developer.id}", Any::class.java)
 
   private data class InvalidModel(val invalid: String = "")
+
   private fun getById(id: UUID) = dao.getById(id).getOrElse { null }?.getOrElse { null }!!
   private fun create(developer: Developer) = dao.create(developer).getOrElse { null }!!
 }
