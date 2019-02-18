@@ -1,0 +1,42 @@
+
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+GET http://{{host}}:{{port}}/actuator
+Accept: application/json
+
+###
+
+GET http://{{host}}:{{port}}/actuator/info
+Accept: application/json
+
+###
+
+GET http://{{host}}:{{port}}/actuator/health
+Accept: application/json
+
+###
+
+GET http://{{host}}:{{port}}/actuator/metrics
+Accept: application/json
+
+###
+
+GET http://{{host}}:{{port}}/actuator/metrics/jvm.memory.used
+Accept: application/json
+
+###
+
+GET http://localhost:5000/heapdump
+Accept: application/json
+
+###
+
+GET http://localhost:5000/httptrace
+Accept: application/json
+
+###

@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 POST http://localhost:8080/developer
+=======
+POST http://{{host}}:{{port}}/developer
+>>>>>>> Stashed changes
 Content-Type: application/json
 
 {
@@ -12,13 +16,21 @@ Content-Type: application/json
 
 ###
 
+<<<<<<< Updated upstream
 GET http://localhost:8080/developer/{{devId}}
+=======
+GET http://{{host}}:{{port}}/developer/{{devId}}
+>>>>>>> Stashed changes
 Accept: application/json
 
 ###
 
 
+<<<<<<< Updated upstream
 GET http://localhost:8080/developer/ba166a3c-f9ce-414c-baad-1737038d49b2
+=======
+GET http://{{host}}:{{port}}/developer/ba166a3c-f9ce-414c-baad-1737038d49b2
+>>>>>>> Stashed changes
 Accept: application/json
 
 ###
