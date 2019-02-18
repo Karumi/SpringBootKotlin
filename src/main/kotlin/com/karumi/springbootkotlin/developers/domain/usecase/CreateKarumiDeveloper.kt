@@ -16,16 +16,16 @@ class CreateKarumiDeveloper(
 ) {
 
   operator fun invoke(developer: Developer): Try<Developer> =
-      validKarumiDeveloper(developer)
-          .flatMap {
-            developerDao.create(it)
-                .mapException { DeveloperError.StorageError }
-          }
+    validKarumiDeveloper(developer)
+      .flatMap {
+        developerDao.create(it)
+          .mapException { DeveloperError.StorageError }
+      }
 
   private fun validKarumiDeveloper(developer: Developer): Try<Developer> =
-      if (DeveloperValidator.isKarumiDeveloper(developer)) {
-        developer.success()
-      } else {
-        DeveloperError.NotKarumier.failure()
-      }
+    if (DeveloperValidator.isKarumiDeveloper(developer)) {
+      developer.success()
+    } else {
+      DeveloperError.NotKarumier.failure()
+    }
 }

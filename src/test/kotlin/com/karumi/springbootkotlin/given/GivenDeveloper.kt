@@ -1,29 +1,25 @@
 package com.karumi.springbootkotlin.given
 
 import com.karumi.springbootkotlin.developers.domain.Developer
+import java.util.UUID
 
 interface GivenDeveloper {
-  fun givenDeveloper(): Developer
-  fun givenNewDeveloper(): Developer
-  fun givenNewKarumiDeveloper(): Developer
-}
+  companion object {
+    val DEVELOPER_ID = UUID.fromString("c04ecc99-d7ba-460c-be78-6995805c5175")!!
+  }
 
-val givenDeveloper = GivenDummyDevelopers()
-
-class GivenDummyDevelopers : GivenDeveloper {
-
-  override fun givenNewDeveloper(): Developer = Developer(
-      username = "Unknown",
-      email = "email@email.com"
+  fun givenNewDeveloper(): Developer = Developer(
+    username = "Unknown",
+    email = "email@email.com"
   )
 
-  override fun givenNewKarumiDeveloper(): Developer = Developer(
-      username = "Unknown",
-      email = "email@karumi.com"
+  fun givenNewKarumiDeveloper(): Developer = Developer(
+    username = "Unknown",
+    email = "email@karumi.com"
   )
 
-  override fun givenDeveloper(): Developer = Developer(
-      username = "Unknown",
-      email = null
+  fun givenDeveloper(): Developer = Developer(
+    username = "Unknown",
+    email = null
   )
 }

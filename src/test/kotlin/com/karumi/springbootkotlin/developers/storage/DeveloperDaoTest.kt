@@ -4,7 +4,6 @@ import arrow.core.getOrElse
 import arrow.core.success
 import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.given.GivenDeveloper
-import com.karumi.springbootkotlin.given.givenDeveloper
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener
@@ -15,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DeveloperDaoTest : StringSpec(), GivenDeveloper by givenDeveloper {
+class DeveloperDaoTest : StringSpec(), GivenDeveloper {
 
   override fun listeners() = listOf(SpringListener)
 

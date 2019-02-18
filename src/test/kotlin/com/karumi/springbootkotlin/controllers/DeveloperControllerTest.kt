@@ -4,7 +4,6 @@ import arrow.core.getOrElse
 import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import com.karumi.springbootkotlin.given.GivenDeveloper
-import com.karumi.springbootkotlin.given.givenDeveloper
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener
@@ -23,7 +22,7 @@ import java.util.UUID
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DeveloperControllerTest : StringSpec(), GivenDeveloper by givenDeveloper {
+class DeveloperControllerTest : StringSpec(), GivenDeveloper {
 
   @LocalServerPort
   var PORT: Int = 0
