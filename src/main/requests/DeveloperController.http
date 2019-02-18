@@ -1,4 +1,4 @@
-POST http://localhost:8080/developer
+POST http://localhost:5000/developer
 Content-Type: application/json
 
 {
@@ -12,13 +12,13 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/developer/{{devId}}
+GET http://localhost:5000/developer/{{devId}}
 Accept: application/json
 
 ###
 
 
-GET http://localhost:8080/developer/ba166a3c-f9ce-414c-baad-1737038d49b2
+GET http://localhost:5000/developer/ba166a3c-f9ce-414c-baad-1737038d49b2
 Accept: application/json
 
 ###
