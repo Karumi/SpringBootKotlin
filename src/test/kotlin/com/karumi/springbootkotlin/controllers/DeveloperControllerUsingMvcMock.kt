@@ -3,10 +3,13 @@ package com.karumi.springbootkotlin.controllers
 import arrow.core.None
 import arrow.core.some
 import arrow.core.success
-import com.karumi.kotlinsnapshot.matchWithSnapshot
 import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import com.karumi.springbootkotlin.given.GivenDeveloper
 import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.DEVELOPER_ID
+import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.KARUMI_DEVELOPER
+import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.SESSION_DEVELOPER
+import com.karumi.springbootkotlin.matchWithSnapshot
+import com.karumi.springbootkotlin.withAuthorization
 import com.ninjasquad.springmockk.MockkBean
 import io.kotlintest.Spec
 import io.kotlintest.specs.WordSpec
@@ -20,7 +23,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.TestContextManager
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -46,14 +48,14 @@ class DeveloperControllerUsingMvcMock : WordSpec(), GivenDeveloper {
   init {
     "POST /developer" should {
       "create a developer if it's a karumi developer" {
-        val createdDeveloper = givenNewKarumiDeveloper().copy(id = GivenDeveloper.DEVELOPER_ID)
-
-        every { developerDao.create(any()) } returns createdDeveloper.success()
+        every { developerDao.create(any()) } returns KARUMI_DEVELOPER.success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
             .content(getContent("CreateKarumiDeveloper.json"))
+            .withAuthorization()
         ).andExpect(status().isCreated)
           .andDo(print())
           .andReturn()
@@ -61,34 +63,54 @@ class DeveloperControllerUsingMvcMock : WordSpec(), GivenDeveloper {
       }
 
       "not create a developer if it isn't a karumi developer" {
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
+
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
             .content(getContent("CreateDeveloper.json"))
+            .withAuthorization()
         ).andExpect(status().isBadRequest)
           .andDo(print())
           .andReturn()
       }
 
       "returns 400 if the json body isn't expected" {
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
+
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
             .content(getContent("BadDeveloperBody.json"))
+            .withAuthorization()
         ).andExpect(status().isBadRequest)
           .andDo(print())
           .andReturn()
+      }
+
+      "developer POST should returns 401 if doesn't have authentication token" {
+        every { developerDao.getByUsername(any()) } returns None.success()
+
+        mockMvc.perform(
+          post("/developer")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(getContent("CreateKarumiDeveloper.json"))
+        ).andExpect(status().isUnauthorized)
+          .andDo(print())
+          .andReturn()
+          .matchWithSnapshot(this)
       }
     }
 
     "GET /developer/{id}" should {
       "retrieve by id" {
-        val createdDeveloper = givenNewKarumiDeveloper().copy(id = GivenDeveloper.DEVELOPER_ID)
-        every { developerDao.getById(DEVELOPER_ID) } returns createdDeveloper.some().success()
+        every { developerDao.getById(DEVELOPER_ID) } returns KARUMI_DEVELOPER.some().success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
           get("/developer/$DEVELOPER_ID")
             .contentType(MediaType.APPLICATION_JSON)
+            .withAuthorization()
         ).andExpect(status().isOk)
           .andDo(print())
           .andReturn()
@@ -97,13 +119,25 @@ class DeveloperControllerUsingMvcMock : WordSpec(), GivenDeveloper {
 
       "returns 404 code if there isn't the developer in the database" {
         every { developerDao.getById(DEVELOPER_ID) } returns None.success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
           get("/developer/${GivenDeveloper.DEVELOPER_ID}")
             .contentType(MediaType.APPLICATION_JSON)
+            .withAuthorization()
         ).andExpect(status().isNotFound)
           .andDo(print())
           .andReturn()
+      }
+
+      "developer GET should returns 401 if doesn't have authentication token" {
+        mockMvc.perform(
+          get("/developer/$DEVELOPER_ID")
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isUnauthorized)
+          .andDo(print())
+          .andReturn()
+          .matchWithSnapshot(this)
       }
     }
   }
@@ -111,9 +145,5 @@ class DeveloperControllerUsingMvcMock : WordSpec(), GivenDeveloper {
   fun getContent(fileName: String): String {
     val resource = ClassPathResource(fileName).file
     return String(Files.readAllBytes(resource.toPath()))
-  }
-
-  fun MvcResult.matchWithSnapshot(context: FinalTestContext) {
-    response.contentAsString.matchWithSnapshot(context.description().name)
   }
 }
