@@ -2,7 +2,6 @@ package com.karumi.springbootkotlin.developers.storage
 
 import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.given.GivenDeveloper
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.KARUMI_DEVELOPER
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener

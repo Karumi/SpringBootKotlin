@@ -8,18 +8,12 @@ import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import com.karumi.springbootkotlin.developers.storage.DeveloperRepository
 import com.karumi.springbootkotlin.getAuthorized
 import com.karumi.springbootkotlin.given.GivenDeveloper
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.ANY_NEW_DEVELOPER
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.DEVELOPER_ID
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.KARUMI_DEVELOPER
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.NEW_KARUMI_DEVELOPER
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.SESSION_DEVELOPER
 import com.karumi.springbootkotlin.postAuthorized
 import com.karumi.springbootkotlin.uuid
 import io.kotlintest.provided.CleanDatabaseListener
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -31,10 +25,8 @@ import org.springframework.http.HttpStatus.OK
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.http.ResponseEntity
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.junit4.SpringRunner
 import java.util.UUID
 
-@RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class DeveloperControllerTest @Autowired constructor(
@@ -66,7 +58,7 @@ class DeveloperControllerTest @Autowired constructor(
       obtainedDeveloper.email shouldBe newDeveloper.email
     }
 
-    "developer POST shouldn't create a developer if it isn't a karumi developer" {
+    "developer POST should returns 400 if it isn't a karumi developer" {
       val result = withSession().post(ANY_NEW_DEVELOPER)
 
       result.statusCode shouldBe BAD_REQUEST
