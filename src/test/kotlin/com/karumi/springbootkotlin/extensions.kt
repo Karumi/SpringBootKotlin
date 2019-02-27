@@ -1,6 +1,8 @@
 package com.karumi.springbootkotlin
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.karumi.kotlinsnapshot.matchWithSnapshot
+import com.karumi.springbootkotlin.developers.api.DeveloperBody
 import com.karumi.springbootkotlin.security.Token
 import com.karumi.springbootkotlin.security.TokenHelper
 import io.kotlintest.TestContext
@@ -56,8 +58,9 @@ private fun getContent(fileName: String): String {
 fun getTokenForTestUser(): Token =
   TokenHelper().generateToken("Test")
 
-fun ResultActions.matchWithSnapshot(testName: String) {
-  andReturn().response.contentAsString.matchWithSnapshot(testName)
+fun ResultActions.getDeveloper(): DeveloperBody {
+  val mapper = jacksonObjectMapper()
+  return mapper.readValue(andReturn().response.contentAsString, DeveloperBody::class.java)
 }
 
 fun ResultActions.matchWithSnapshot(context: TestContext? = null) {

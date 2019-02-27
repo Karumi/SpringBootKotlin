@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -41,7 +41,7 @@ class DeveloperControllerTestMockUser(
         .withContent("CreateKarumiDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isCreated)
       .andExpectContent("ExpectedNewDeveloper.json")
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -54,7 +54,7 @@ class DeveloperControllerTestMockUser(
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("CreateDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isBadRequest)
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -67,7 +67,7 @@ class DeveloperControllerTestMockUser(
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("BadDeveloperBody.json")
     ).andExpect(MockMvcResultMatchers.status().isBadRequest)
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -79,7 +79,7 @@ class DeveloperControllerTestMockUser(
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("CreateKarumiDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isUnauthorized)
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -93,7 +93,7 @@ class DeveloperControllerTestMockUser(
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isOk)
       .andExpectContent("ExpectedNewDeveloper.json")
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -106,7 +106,7 @@ class DeveloperControllerTestMockUser(
       MockMvcRequestBuilders.get("/developer/$DEVELOPER_ID")
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isNotFound)
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 
   @Test
@@ -115,6 +115,6 @@ class DeveloperControllerTestMockUser(
       MockMvcRequestBuilders.get("/developer/$DEVELOPER_ID")
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isUnauthorized)
-      .andDo(MockMvcResultHandlers.print())
+      .andDo(print())
   }
 }
