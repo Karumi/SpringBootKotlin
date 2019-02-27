@@ -16,7 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
@@ -36,7 +37,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.post("/developer")
+      post("/developer")
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("CreateKarumiDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isCreated)
@@ -50,7 +51,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.post("/developer")
+      post("/developer")
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("CreateDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isBadRequest)
@@ -63,7 +64,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.post("/developer")
+      post("/developer")
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("BadDeveloperBody.json")
     ).andExpect(MockMvcResultMatchers.status().isBadRequest)
@@ -75,7 +76,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns None.success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.post("/developer")
+      post("/developer")
         .contentType(MediaType.APPLICATION_JSON)
         .withContent("CreateKarumiDeveloper.json")
     ).andExpect(MockMvcResultMatchers.status().isUnauthorized)
@@ -89,7 +90,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.get("/developer/$DEVELOPER_ID")
+      get("/developer/$DEVELOPER_ID")
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isOk)
       .andExpectContent("ExpectedNewDeveloper.json")
@@ -103,7 +104,7 @@ class DeveloperControllerTestMockUser(
     every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
     mockMvc.perform(
-      MockMvcRequestBuilders.get("/developer/$DEVELOPER_ID")
+      get("/developer/$DEVELOPER_ID")
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isNotFound)
       .andDo(print())
@@ -112,7 +113,7 @@ class DeveloperControllerTestMockUser(
   @Test
   fun `developer GET should returns 401 if doesn't have authentication token`() {
     mockMvc.perform(
-      MockMvcRequestBuilders.get("/developer/$DEVELOPER_ID")
+      get("/developer/$DEVELOPER_ID")
         .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(MockMvcResultMatchers.status().isUnauthorized)
       .andDo(print())
