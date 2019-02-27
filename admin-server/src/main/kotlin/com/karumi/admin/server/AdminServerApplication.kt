@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 }
 
 @Configuration
-class SecurityConfig : WebSecurityConfigurerAdapter() {
+class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
 
   @Throws(Exception::class)
   override fun configure(http: HttpSecurity) {

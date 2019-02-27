@@ -63,6 +63,7 @@ class SecurityConfig(
       .antMatchers("/swagger-ui.html**").permitAll()
       .antMatchers("/webjars/**").permitAll()
       .antMatchers("/h2-console/**").permitAll()
+      .antMatchers("/actuator/**").permitAll()
       .anyRequest().authenticated()
       .and()
       .headers().frameOptions().sameOrigin()

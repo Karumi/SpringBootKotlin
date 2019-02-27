@@ -1,0 +1,24 @@
+POST http://{{host}}:{{port}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "example",
+  "email": "example@karumi.com",
+  "password": "password"
+}
+
+###
+
+POST http://{{host}}:{{port}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "example",
+  "password": "password"
+}
+
+> {%
+ client.global.set("token", response.body)
+ %}
+
+###

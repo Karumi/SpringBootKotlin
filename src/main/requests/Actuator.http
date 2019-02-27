@@ -8,35 +8,39 @@
 
 GET http://{{host}}:{{port}}/actuator
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 GET http://{{host}}:{{port}}/actuator/info
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 GET http://{{host}}:{{port}}/actuator/health
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 GET http://{{host}}:{{port}}/actuator/metrics
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 GET http://{{host}}:{{port}}/actuator/metrics/jvm.memory.used
 Accept: application/json
-
+Authorization: Bearer {{token}}
 ###
 
-GET http://localhost:5000/heapdump
+GET http://{{host}}:{{port}}/heapdump
 Accept: application/json
-
+Authorization: Bearer {{token}}
 ###
 
-GET http://localhost:5000/httptrace
+GET http://{{host}}:{{port}}/httptrace
 Accept: application/json
-
+Authorization: Bearer {{token}}
 ###

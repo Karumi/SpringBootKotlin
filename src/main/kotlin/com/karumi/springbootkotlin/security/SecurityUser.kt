@@ -1,6 +1,7 @@
 package com.karumi.springbootkotlin.security
 
 import com.karumi.springbootkotlin.developers.domain.Developer
+import com.karumi.springbootkotlin.developers.domain.DeveloperValidator
 import com.karumi.springbootkotlin.developers.domain.EncodedPassword
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -27,5 +28,13 @@ class SecurityUser(
 }
 
 fun Developer.toSecurityUser(): SecurityUser = SecurityUser(
-  id.toString(), username, password
+  id.toString(), username, password, getRole()
+)
+
+private fun Developer.getRole() = listOf(
+  if (DeveloperValidator.isKarumiDeveloper(this)) {
+    GrantedAuthority { "ROLE_KARUMIER" }
+  } else {
+    GrantedAuthority { "ROLE_USER" }
+  }
 )
