@@ -6,9 +6,11 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.spring.SpringListener
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @DataJpaTest
+@Transactional
 class DeveloperRepositoryTest(
   val repository: DeveloperRepository
 ) : StringSpec(), GivenDeveloper {
