@@ -3,7 +3,6 @@ package com.karumi.springbootkotlin
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.karumi.kotlinsnapshot.matchWithSnapshot
 import com.karumi.springbootkotlin.developers.api.DeveloperBody
-import com.karumi.springbootkotlin.security.Token
 import com.karumi.springbootkotlin.security.TokenHelper
 import io.kotlintest.TestContext
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -55,7 +54,7 @@ private fun getContent(fileName: String): String {
   return String(Files.readAllBytes(resource.toPath()))
 }
 
-fun getTokenForTestUser(): Token =
+fun getTokenForTestUser(): String =
   TokenHelper().generateToken("Test")
 
 fun ResultActions.getDeveloper(): DeveloperBody {

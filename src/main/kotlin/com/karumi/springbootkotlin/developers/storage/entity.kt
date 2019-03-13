@@ -1,7 +1,6 @@
 package com.karumi.springbootkotlin.developers.storage
 
 import com.karumi.springbootkotlin.developers.domain.Developer
-import com.karumi.springbootkotlin.developers.domain.EncodedPassword
 import java.util.UUID
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -16,8 +15,8 @@ data class DeveloperEntity(
   @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: UUID?
 )
 
-fun Developer.toEntity(): DeveloperEntity = DeveloperEntity(username, email, password.password, id)
+fun Developer.toEntity(): DeveloperEntity = DeveloperEntity(username, email, password, id)
 
 fun DeveloperEntity.toDomain(): Developer = Developer(
-  username, email, EncodedPassword(password), id
+  username, email, password, id
 )

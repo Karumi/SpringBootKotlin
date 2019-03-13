@@ -1,6 +1,5 @@
 package com.karumi.springbootkotlin
 
-import com.karumi.springbootkotlin.developers.domain.EncodedPassword
 import com.karumi.springbootkotlin.security.SecurityUser
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext
@@ -12,7 +11,7 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
   override fun createSecurityContext(customUser: WithMockCustomUser): SecurityContext {
     val context = SecurityContextHolder.createEmptyContext()
 
-    val principal = SecurityUser("1234", customUser.name, EncodedPassword(customUser.username))
+    val principal = SecurityUser("1234", customUser.name, customUser.username)
     val auth = UsernamePasswordAuthenticationToken(principal, "1234", principal.authorities)
     context.authentication = auth
     return context

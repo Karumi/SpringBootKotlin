@@ -6,7 +6,6 @@ import com.karumi.springbootkotlin.common.orThrow
 import com.karumi.springbootkotlin.developers.api.DeveloperBody
 import com.karumi.springbootkotlin.developers.api.toBody
 import com.karumi.springbootkotlin.developers.domain.PasswordEncoder
-import com.karumi.springbootkotlin.security.Token
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -32,7 +31,7 @@ class AuthController(
   }
 
   @PostMapping("/login")
-  fun login(@RequestBody request: LoginRequest): Token {
+  fun login(@RequestBody request: LoginRequest): String {
     val userPass = UsernamePasswordAuthenticationToken(request.username, request.password)
     return loginDeveloper(userPass).orThrow()
   }

@@ -1,6 +1,5 @@
 package com.karumi.springbootkotlin.security
 
-import com.karumi.springbootkotlin.developers.domain.EncodedPassword
 import com.karumi.springbootkotlin.developers.domain.PasswordEncoder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -34,7 +33,7 @@ class SecurityConfig(
 
   @Bean
   fun passwordEncoder(): PasswordEncoder = { password ->
-    EncodedPassword(CRYPT_ENCODER.encode(password))
+    CRYPT_ENCODER.encode(password)
   }
 
   @Bean

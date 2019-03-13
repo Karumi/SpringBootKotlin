@@ -2,14 +2,13 @@ package com.karumi.springbootkotlin.security
 
 import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.developers.domain.DeveloperValidator
-import com.karumi.springbootkotlin.developers.domain.EncodedPassword
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class SecurityUser(
   val id: String,
   private val username: String,
-  private val password: EncodedPassword,
+  private val password: String,
   private val authorities: List<GrantedAuthority> = emptyList()
 ) : UserDetails {
   override fun getAuthorities(): Collection<GrantedAuthority> = authorities
@@ -20,7 +19,7 @@ class SecurityUser(
 
   override fun isCredentialsNonExpired(): Boolean = true
 
-  override fun getPassword(): String = password.password
+  override fun getPassword(): String = password
 
   override fun isAccountNonExpired(): Boolean = true
 

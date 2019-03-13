@@ -5,16 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.UUID
 
 typealias
-  PasswordEncoder = (String) -> EncodedPassword
-
-inline class EncodedPassword(val password: String) {
-  override fun toString(): String = password
-}
+  PasswordEncoder = (String) -> String
 
 data class Developer(
   val username: String,
   val email: String?,
-  val password: EncodedPassword,
+  val password: String,
   val id: UUID? = null
 )
 
