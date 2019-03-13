@@ -99,7 +99,7 @@ dependencies {
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
 
-    ktlint "com.github.shyiko:ktlint:0.30.0"
+    ktlint "com.github.shyiko:ktlint:0.31.0"
 }
 
 task ktlint(type: JavaExec) {
