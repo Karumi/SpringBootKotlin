@@ -3,117 +3,119 @@ package com.karumi.springbootkotlin.controllers
 import arrow.core.None
 import arrow.core.some
 import arrow.core.success
-import com.karumi.kotlinsnapshot.matchWithSnapshot
 import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import com.karumi.springbootkotlin.given.GivenDeveloper
-import com.karumi.springbootkotlin.given.GivenDeveloper.Companion.DEVELOPER_ID
+import com.karumi.springbootkotlin.matchWithSnapshot
+import com.karumi.springbootkotlin.withAuthorization
+import com.karumi.springbootkotlin.withContent
 import com.ninjasquad.springmockk.MockkBean
-import io.kotlintest.Spec
+import io.kotlintest.extensions.TestListener
 import io.kotlintest.specs.WordSpec
+import io.kotlintest.spring.SpringListener
 import io.mockk.every
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
-import org.springframework.test.context.TestContextManager
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.nio.file.Files
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class DeveloperControllerUsingMvcMock : WordSpec(), GivenDeveloper {
+class DeveloperControllerUsingMvcMock(
+  private val mockMvc: MockMvc,
+  @MockkBean val developerDao: DeveloperDao
+) : WordSpec(), GivenDeveloper {
 
-  @Autowired
-  private lateinit var mockMvc: MockMvc
-
-  @MockkBean
-  private lateinit var developerDao: DeveloperDao
-
-  // Use this until the next release 3.3.0: https://github.com/kotlintest/kotlintest/pull/684
-  override fun beforeSpec(spec: Spec) {
-    TestContextManager(this.javaClass).prepareTestInstance(spec)
-  }
+  override fun listeners(): List<TestListener> = listOf(SpringListener)
 
   init {
     "POST /developer" should {
       "create a developer if it's a karumi developer" {
-        val createdDeveloper = givenNewKarumiDeveloper().copy(id = GivenDeveloper.DEVELOPER_ID)
-
-        every { developerDao.create(any()) } returns createdDeveloper.success()
+        every { developerDao.create(any()) } returns KARUMI_DEVELOPER.success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(getContent("CreateKarumiDeveloper.json"))
+            .withContent("CreateKarumiDeveloper.json")
+            .withAuthorization()
         ).andExpect(status().isCreated)
           .andDo(print())
-          .andReturn()
           .matchWithSnapshot(this)
       }
 
-      "not create a developer if it isn't a karumi developer" {
+      "returns 400 if it isn't a karumi developer" {
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
+
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(getContent("CreateDeveloper.json"))
+            .withContent("CreateDeveloper.json")
+            .withAuthorization()
         ).andExpect(status().isBadRequest)
           .andDo(print())
-          .andReturn()
       }
 
       "returns 400 if the json body isn't expected" {
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
+
         mockMvc.perform(
           post("/developer")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(getContent("BadDeveloperBody.json"))
+            .withContent("BadDeveloperBody.json")
+            .withAuthorization()
         ).andExpect(status().isBadRequest)
           .andDo(print())
-          .andReturn()
+      }
+
+      "developer POST should returns 401 if doesn't have authentication token" {
+        every { developerDao.getByUsername(any()) } returns None.success()
+
+        mockMvc.perform(
+          post("/developer")
+            .contentType(MediaType.APPLICATION_JSON)
+            .withContent("CreateKarumiDeveloper.json")
+        ).andExpect(status().isUnauthorized)
+          .andDo(print())
       }
     }
 
     "GET /developer/{id}" should {
       "retrieve by id" {
-        val createdDeveloper = givenNewKarumiDeveloper().copy(id = GivenDeveloper.DEVELOPER_ID)
-        every { developerDao.getById(DEVELOPER_ID) } returns createdDeveloper.some().success()
+        every { developerDao.getById(DEVELOPER_ID) } returns KARUMI_DEVELOPER.some().success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
           get("/developer/$DEVELOPER_ID")
             .contentType(MediaType.APPLICATION_JSON)
+            .withAuthorization()
         ).andExpect(status().isOk)
           .andDo(print())
-          .andReturn()
           .matchWithSnapshot(this)
       }
 
       "returns 404 code if there isn't the developer in the database" {
         every { developerDao.getById(DEVELOPER_ID) } returns None.success()
+        every { developerDao.getByUsername(any()) } returns SESSION_DEVELOPER.some().success()
 
         mockMvc.perform(
-          get("/developer/${GivenDeveloper.DEVELOPER_ID}")
+          get("/developer/$DEVELOPER_ID")
             .contentType(MediaType.APPLICATION_JSON)
+            .withAuthorization()
         ).andExpect(status().isNotFound)
           .andDo(print())
-          .andReturn()
+      }
+
+      "developer GET should returns 401 if doesn't have authentication token" {
+        mockMvc.perform(
+          get("/developer/$DEVELOPER_ID")
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isUnauthorized)
+          .andDo(print())
       }
     }
-  }
-
-  fun getContent(fileName: String): String {
-    val resource = ClassPathResource(fileName).file
-    return String(Files.readAllBytes(resource.toPath()))
-  }
-
-  fun MvcResult.matchWithSnapshot(context: FinalTestContext) {
-    response.contentAsString.matchWithSnapshot(context.description().name)
   }
 }
