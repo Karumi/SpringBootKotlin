@@ -12,20 +12,20 @@ import org.springframework.stereotype.Component
 
 @Component
 class CreateKarumiDeveloper(
-    private val developerDao: DeveloperDao
+  private val developerDao: DeveloperDao
 ) {
 
   operator fun invoke(developer: Developer): Try<Developer> =
-      validKarumiDeveloper(developer)
-          .flatMap {
-            developerDao.create(it)
-                .mapException { DeveloperError.StorageError }
-          }
+    validKarumiDeveloper(developer)
+      .flatMap {
+        developerDao.create(it)
+          .mapException { DeveloperError.StorageError }
+      }
 
   private fun validKarumiDeveloper(developer: Developer): Try<Developer> =
-      if (DeveloperValidator.isKarumiDeveloper(developer)) {
-        developer.success()
-      } else {
-        DeveloperError.NotKarumier.failure()
-      }
+    if (DeveloperValidator.isKarumiDeveloper(developer)) {
+      developer.success()
+    } else {
+      DeveloperError.NotKarumier.failure()
+    }
 }

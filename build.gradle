@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.3.20'
-        springBootVersion = '2.1.2.RELEASE'
+        kotlinVersion = '1.3.21'
+        springBootVersion = '2.1.3.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -69,19 +69,23 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation "de.codecentric:spring-boot-admin-starter-client:2.1.2"
 
+    def arrowVersion = "0.8.2"
+    implementation "io.arrow-kt:arrow-core:$arrowVersion"
+
     def kotlintestVersion = "3.2.1"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "io.kotlintest:kotlintest-runner-junit5:$kotlintestVersion"
     testImplementation "io.kotlintest:kotlintest-assertions-arrow:$kotlintestVersion"
     testImplementation "io.kotlintest:kotlintest-extensions-spring:$kotlintestVersion"
-
-    def arrowVersion = "0.8.2"
-    implementation "io.arrow-kt:arrow-core:$arrowVersion"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.2.0'
+    testImplementation 'com.ninja-squad:springmockk:1.1.0'
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
 
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
 
-    ktlint "com.github.shyiko:ktlint:0.20.0"
+    ktlint "com.github.shyiko:ktlint:0.30.0"
 }
 
 task ktlint(type: JavaExec) {

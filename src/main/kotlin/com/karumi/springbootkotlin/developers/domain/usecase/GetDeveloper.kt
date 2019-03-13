@@ -11,7 +11,7 @@ import java.util.UUID
 
 @Component
 class GetDeveloper(
-    private val developerDao: DeveloperDao
+  private val developerDao: DeveloperDao
 ) {
 
   operator fun invoke(developerId: UUID): Try<Developer> =

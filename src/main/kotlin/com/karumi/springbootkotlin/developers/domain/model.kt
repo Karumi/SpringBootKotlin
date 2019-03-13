@@ -11,10 +11,10 @@ import javax.persistence.Id
 
 @Entity
 data class Developer(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: UUID = UUID.randomUUID(),
-    val username: String,
-    val email: String?
+  @Id @GeneratedValue(strategy = GenerationType.AUTO)
+  val id: UUID = UUID.randomUUID(),
+  val username: String,
+  val email: String?
 )
 
 sealed class DeveloperError(message: String) : RuntimeException(message) {

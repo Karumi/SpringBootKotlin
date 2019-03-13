@@ -4,8 +4,7 @@ import com.karumi.springbootkotlin.common.orThrow
 import com.karumi.springbootkotlin.developers.domain.Developer
 import com.karumi.springbootkotlin.developers.domain.usecase.CreateKarumiDeveloper
 import com.karumi.springbootkotlin.developers.domain.usecase.GetDeveloper
-import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,8 +15,8 @@ import java.util.UUID
 
 @RestController
 class DeveloperController(
-    private val createKarumiDeveloper: CreateKarumiDeveloper,
-    private val getKarumiDeveloper: GetDeveloper
+  private val createKarumiDeveloper: CreateKarumiDeveloper,
+  private val getKarumiDeveloper: GetDeveloper
 ) {
 
   @GetMapping("/")
@@ -25,12 +24,11 @@ class DeveloperController(
 
   @PostMapping("/developer")
   fun createDeveloper(@RequestBody developer: Developer): ResponseEntity<Developer> =
-      createKarumiDeveloper(developer)
-          .orThrow()
-          .let { ResponseEntity(it, CREATED) }
+    createKarumiDeveloper(developer)
+      .orThrow()
+      .let { ResponseEntity(it, CREATED) }
 
   @GetMapping("/developer/{developerId}")
   fun getDeveloper(@PathVariable developerId: UUID): Developer =
-      getKarumiDeveloper(developerId).orThrow()
-
+    getKarumiDeveloper(developerId).orThrow()
 }
