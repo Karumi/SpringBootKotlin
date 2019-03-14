@@ -19,7 +19,7 @@ Usage
 You can use [IntelliJ Http Client][httpclient] files to make some request to the local server [located here][httpfiles]. 
 Run `Authentication.http` file before others to have credentials to make requests. 
 
-You can also take a look to all endpoints in Swagger UI Web at http://localhost:5000/swagger-ui.html. 
+You can also take a look at all endpoints in Swagger UI Web at http://localhost:5000/swagger-ui.html. 
 
 Actuator
 ================
@@ -34,7 +34,7 @@ cd admin-server
 ./gradlew bootRun
 ```
 
-Which is listening at `http://localhost:8080/` with user `admin` and password `admin-password`.
+Which is listening on `http://localhost:8080/` with user `admin` and password `admin-password`.
 
 
 License
