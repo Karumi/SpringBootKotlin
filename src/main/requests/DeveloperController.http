@@ -1,4 +1,3 @@
-
 POST http://{{host}}:{{port}}/developer
 Content-Type: application/json
 Authorization: Bearer {{token}}

@@ -33,14 +33,17 @@ Authorization: Bearer {{token}}
 GET http://{{host}}:{{port}}/actuator/metrics/jvm.memory.used
 Accept: application/json
 Authorization: Bearer {{token}}
+
 ###
 
 GET http://{{host}}:{{port}}/heapdump
 Accept: application/json
 Authorization: Bearer {{token}}
+
 ###
 
 GET http://{{host}}:{{port}}/httptrace
 Accept: application/json
 Authorization: Bearer {{token}}
+
 ###

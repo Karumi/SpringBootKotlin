@@ -3,8 +3,8 @@ package com.karumi.springbootkotlin.authentication.domain.usecase
 import arrow.core.Option
 import arrow.core.Try
 import arrow.core.failure
+import com.karumi.springbootkotlin.developers.domain.AlreadyRegistered
 import com.karumi.springbootkotlin.developers.domain.Developer
-import com.karumi.springbootkotlin.developers.domain.DeveloperError
 import com.karumi.springbootkotlin.developers.storage.DeveloperDao
 import org.springframework.stereotype.Component
 
@@ -21,7 +21,7 @@ class RegisterDeveloper(
     it.fold({
       developerDao.create(developer)
     }, {
-      DeveloperError.AlreadyRegistered.failure()
+      AlreadyRegistered.failure()
     })
   }
 }

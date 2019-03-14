@@ -27,18 +27,18 @@ class ActuatorSecurityConfig : WebSecurityConfigurerAdapter() {
     successHandler.setDefaultTargetUrl("/")
 
     http.authorizeRequests()
-        .antMatchers("/assets/**").permitAll()
-        .antMatchers("/login").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .formLogin().loginPage("/login").successHandler(successHandler).and()
-        .logout().logoutUrl("/logout").and()
-        .httpBasic().and()
-        .csrf()
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .ignoringAntMatchers(
-            "/instances",
-            "/actuator/**"
-        )
+      .antMatchers("/assets/**").permitAll()
+      .antMatchers("/login").permitAll()
+      .anyRequest().authenticated()
+      .and()
+      .formLogin().loginPage("/login").successHandler(successHandler).and()
+      .logout().logoutUrl("/logout").and()
+      .httpBasic().and()
+      .csrf()
+      .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+      .ignoringAntMatchers(
+        "/instances",
+        "/actuator/**"
+      )
   }
 }

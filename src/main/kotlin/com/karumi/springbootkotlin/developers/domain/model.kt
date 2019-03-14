@@ -14,16 +14,14 @@ data class Developer(
   val id: UUID? = null
 )
 
-sealed class DeveloperError(message: String) : RuntimeException(message) {
-  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  object StorageError : DeveloperError("Internal storage error")
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+object StorageError : RuntimeException("Internal storage error")
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  object NotFound : DeveloperError("Developer not found")
+@ResponseStatus(HttpStatus.NOT_FOUND)
+object NotFound : RuntimeException("Developer not found")
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  object NotKarumier : DeveloperError("Developer isn't karumier")
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+object NotKarumier : RuntimeException("Developer isn't karumier")
 
-  @ResponseStatus(HttpStatus.CONFLICT)
-  object AlreadyRegistered : DeveloperError("Developer already registered")
-}
+@ResponseStatus(HttpStatus.CONFLICT)
+object AlreadyRegistered : RuntimeException("Developer already registered")
