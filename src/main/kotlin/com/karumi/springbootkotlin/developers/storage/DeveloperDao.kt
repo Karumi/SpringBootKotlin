@@ -11,7 +11,7 @@ import java.util.UUID
 
 @Component
 interface DeveloperRepository : CrudRepository<DeveloperEntity, UUID> {
-  fun findByUsername(username: String): DeveloperEntity?
+  fun findByUsernameContainingIgnoreCase(username: String): DeveloperEntity?
 }
 
 @Component
@@ -33,7 +33,7 @@ class DeveloperDao(private val developerRepository: DeveloperRepository) {
   }
 
   fun getByUsername(username: String): Try<Option<Developer>> = TryLogger {
-    developerRepository.findByUsername(username)
+    developerRepository.findByUsernameContainingIgnoreCase(username)
       .toOption()
       .map { it.toDomain() }
   }

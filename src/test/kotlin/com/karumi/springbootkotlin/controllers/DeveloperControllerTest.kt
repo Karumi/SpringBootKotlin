@@ -24,11 +24,9 @@ import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.http.ResponseEntity
-import org.springframework.test.annotation.DirtiesContext
 import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class DeveloperControllerTest @Autowired constructor(
   private val dao: DeveloperDao,
   private val restTemplate: TestRestTemplate,
