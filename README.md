@@ -3,7 +3,7 @@
 [Spring boot][springboot] Kotlin example using some Spring features like Security, Actuator, JPA, Workers and MvcTests.
 
 Application code example it's based on [Play Framework Kotlin repository][playframeworkkotlin] with some news endpoints 
-to register and login developers, it uses in-memory database calls H2.
+to register and login developers, it uses H2 in-memory database.
 
 
 Running
